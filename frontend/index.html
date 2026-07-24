@@ -15,8 +15,8 @@
             <div class="hud-glow"></div>
         </div>
 
-        <!-- Arc Reactor HUD -->
-        <div class="hud-center" id="hudCenter">
+        <!-- Arc Reactor HUD (centered, behind everything) -->
+        <div class="hud-center">
             <div class="reactor-outer">
                 <div class="ring ring-outer ring-1"></div>
                 <div class="ring ring-outer ring-2"></div>
@@ -30,21 +30,23 @@
                 </div>
                 <div class="hud-ticks"></div>
             </div>
-            <div class="status-bar">
-                <div class="status-indicator">
-                    <span class="dot" id="statusDot"></span>
-                    <span id="statusText">ONLINE</span>
-                </div>
-                <div class="system-time" id="systemTime">00:00:00</div>
-            </div>
         </div>
 
-        <!-- Chat Panel -->
+        <!-- Status bar (top right) -->
+        <div class="status-bar">
+            <div class="status-indicator">
+                <span class="dot" id="statusDot"></span>
+                <span id="statusText">ONLINE</span>
+            </div>
+            <div class="system-time" id="systemTime">00:00:00</div>
+        </div>
+
+        <!-- Chat Panel (right side) -->
         <div class="chat-panel" id="chatPanel">
             <div class="chat-header">
                 <span class="chat-title">COMM CHANNEL</span>
                 <button class="chat-toggle" id="chatToggle">
-                    <svg viewBox="0 0 24 24" width="20" height="20"><path fill="currentColor" d="M19,13H5V11H19V13Z"/></svg>
+                    <svg viewBox="0 0 24 24" width="16" height="16"><path fill="currentColor" d="M19,13H5V11H19V13Z"/></svg>
                 </button>
             </div>
             <div class="chat-area" id="chatArea">
@@ -55,18 +57,18 @@
             </div>
         </div>
 
-        <!-- Controls -->
+        <!-- Controls (bottom) -->
         <div class="controls-bar">
             <button class="mic-btn" id="wakeBtn">
                 <div class="mic-ring"></div>
-                <svg viewBox="0 0 24 24" width="28" height="28">
+                <svg viewBox="0 0 24 24" width="26" height="26">
                     <path fill="currentColor" d="M12,2A3,3 0 0,1 15,5V11A3,3 0 0,1 12,14A3,3 0 0,1 9,11V5A3,3 0 0,1 12,2M19,11C19,14.53 16.39,17.44 13,17.93V21H11V17.93C7.61,17.44 5,14.53 5,11H7A5,5 0 0,0 12,16A5,5 0 0,0 17,11H19Z"/>
                 </svg>
             </button>
             <div class="input-wrapper">
                 <input type="text" id="userInput" placeholder="Shkruaj komandën..." autocomplete="off">
                 <button class="send-btn" id="sendBtn">
-                    <svg viewBox="0 0 24 24" width="22" height="22">
+                    <svg viewBox="0 0 24 24" width="20" height="20">
                         <path fill="currentColor" d="M2,21L23,12L2,3V10L17,12L2,14V21Z"/>
                     </svg>
                 </button>
