@@ -8,86 +8,54 @@
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;700;900&family=Rajdhani:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 </head>
 <body>
+    <div id="grid"></div>
+    <div id="glow"></div>
 
-    <!-- Background -->
-    <div class="grid-bg"></div>
-    <div class="glow-bg"></div>
-
-    <!-- Arc Reactor -->
-    <div class="reactor-bg">
-        <div class="ring r1"></div>
-        <div class="ring r2"></div>
-        <div class="ring r3"></div>
-        <div class="ring r4"></div>
-        <div class="ring r5"></div>
-        <div class="ring r6"></div>
-        <div class="r-ticks"></div>
-        <div class="r-pulse"></div>
-        <div class="r-core">
-            <div class="r-core-label">J.A.R.V.I.S</div>
-        </div>
+    <div id="reactor">
+        <div class="O O1"></div><div class="O O2"></div>
+        <div class="O O3"></div><div class="O O4"></div>
+        <div class="O O5"></div><div class="O O6"></div>
+        <div class="O O7"></div><div class="O O8"></div>
+        <div class="O O9"></div><div class="O O10"></div>
+        <div class="O O11"></div><div class="O O12"></div>
+        <div class="O O13"></div><div class="O O14"></div>
+        <div class="O O15"></div><div class="O O16"></div>
+        <div id="ticks"></div>
+        <div id="pulse"></div>
+        <div id="core"><span>J.A.R.V.I.S</span></div>
     </div>
 
-    <!-- Status -->
-    <div class="status">
-        <div>
-            <span class="dot" id="statusDot"></span>
-            <span id="statusText">ONLINE</span>
-        </div>
+    <div id="status">
+        <div><span class="st-dot" id="statusDot"></span><span id="statusText">ONLINE</span></div>
         <div id="systemTime">00:00:00</div>
     </div>
 
-    <!-- Chat -->
-    <div class="chat" id="chatPanel">
-        <div class="chat-hdr">
-            <span>COMM CHANNEL</span>
-            <button class="chat-btn" id="chatToggle">&#9776;</button>
-        </div>
-        <div class="chat-msgs" id="chatArea">
-            <div class="msg jarvis">
-                <div class="av">J</div>
-                <div class="bub">Përshëndetje! Unë jam JARVIS. Si mund të ndihmoj?</div>
-            </div>
+    <div id="chat">
+        <div class="ch-hdr"><span>COMM CHANNEL</span><button class="ch-btn" id="chatToggle">&#9776;</button></div>
+        <div class="ch-msgs" id="chatArea">
+            <div class="m jarvis"><div class="av">J</div><div class="b">Përshëndetje! Unë jam JARVIS. Si mund të ndihmoj?</div></div>
         </div>
     </div>
 
-    <!-- Controls -->
-    <div class="ctrl">
-        <button class="mic" id="wakeBtn">
-            <div class="mic-ring"></div>
-            <svg viewBox="0 0 24 24" width="26" height="26"><path fill="currentColor" d="M12,2A3,3 0 0,1 15,5V11A3,3 0 0,1 12,14A3,3 0 0,1 9,11V5A3,3 0 0,1 12,2M19,11C19,14.53 16.39,17.44 13,17.93V21H11V17.93C7.61,17.44 5,14.53 5,11H7A5,5 0 0,0 12,16A5,5 0 0,0 17,11H19Z"/></svg>
+    <div id="ctrl">
+        <button id="mic"><div class="mr"></div>
+            <svg viewBox="0 0 24 24" width="24" height="24"><path fill="currentColor" d="M12,2A3,3 0 0,1 15,5V11A3,3 0 0,1 12,14A3,3 0 0,1 9,11V5A3,3 0 0,1 12,2M19,11C19,14.53 16.39,17.44 13,17.93V21H11V17.93C7.61,17.44 5,14.53 5,11H7A5,5 0 0,0 12,16A5,5 0 0,0 17,11H19Z"/></svg>
         </button>
-        <div class="inp-wrap">
+        <div class="iw">
             <input type="text" id="userInput" placeholder="Shkruaj komandën..." autocomplete="off">
-            <button class="snd" id="sendBtn">
-                <svg viewBox="0 0 24 24" width="20" height="20"><path fill="currentColor" d="M2,21L23,12L2,3V10L17,12L2,14V21Z"/></svg>
-            </button>
+            <button class="sd" id="sendBtn"><svg viewBox="0 0 24 24" width="18" height="18"><path fill="currentColor" d="M2,21L23,12L2,3V10L17,12L2,14V21Z"/></svg></button>
         </div>
     </div>
 
-    <!-- Corners -->
     <div class="cn tl"></div><div class="cn tr"></div>
     <div class="cn bl"></div><div class="cn br"></div>
+    <div class="sc"></div>
 
-    <!-- Scanline -->
-    <div class="scan"></div>
-
-    <!-- Voice Overlay -->
-    <div class="vov" id="voiceOverlay">
-        <div class="vov-rings">
-            <div class="vr vr1"></div>
-            <div class="vr vr2"></div>
-            <div class="vr vr3"></div>
-            <div class="vr-c"></div>
-        </div>
-        <div class="vov-txt" id="voiceText">PO DËGJOJ...</div>
-        <div class="waves">
-            <div class="wb"></div><div class="wb"></div><div class="wb"></div>
-            <div class="wb"></div><div class="wb"></div><div class="wb"></div>
-            <div class="wb"></div><div class="wb"></div><div class="wb"></div>
-            <div class="wb"></div>
-        </div>
-        <button class="vov-close" id="overlayClose">NDALO</button>
+    <div class="vo" id="voiceOverlay">
+        <div class="vo-r"><div class="vr vr1"></div><div class="vr vr2"></div><div class="vr vr3"></div><div class="vc"></div></div>
+        <div class="vo-t" id="voiceText">PO DËGJOJ...</div>
+        <div class="wv"><div class="wb"></div><div class="wb"></div><div class="wb"></div><div class="wb"></div><div class="wb"></div><div class="wb"></div><div class="wb"></div><div class="wb"></div><div class="wb"></div><div class="wb"></div></div>
+        <button class="vo-x" id="overlayClose">NDALO</button>
     </div>
 
     <script src="/static/app.js"></script>
