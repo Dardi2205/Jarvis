@@ -1,11 +1,14 @@
 const chatArea = document.getElementById("chatArea");
 const userInput = document.getElementById("userInput");
 const sendBtn = document.getElementById("sendBtn");
-const statusDot = document.querySelector(".dot");
+const statusDot = document.getElementById("statusDot");
 const statusText = document.getElementById("statusText");
 const voiceOverlay = document.getElementById("voiceOverlay");
+const voiceText = document.getElementById("voiceText");
 const systemTime = document.getElementById("systemTime");
 const wakeBtn = document.getElementById("wakeBtn");
+const chatPanel = document.getElementById("chatPanel");
+const chatToggle = document.getElementById("chatToggle");
 
 let history = [];
 let isSpeaking = false;
@@ -16,7 +19,7 @@ let recording = false;
 
 function updateTime() {
     const now = new Date();
-    systemTime.textContent = 
+    systemTime.textContent =
         String(now.getHours()).padStart(2,'0') + ":" +
         String(now.getMinutes()).padStart(2,'0') + ":" +
         String(now.getSeconds()).padStart(2,'0');
@@ -28,17 +31,24 @@ async function checkHealth() {
     try {
         const r = await fetch("/api/health");
         const d = await r.json();
-        statusDot.classList.toggle("online", d.status === "ok");
-        statusText.textContent = d.status === "ok" ? "ONLINE" : "OFFLINE";
+        const online = d.status === "ok";
+        statusDot.classList.toggle("offline", !online);
+        statusText.textContent = online ? "ONLINE" : "OFFLINE";
     } catch {
         statusText.textContent = "OFFLINE";
+        statusDot.classList.add("offline");
     }
 }
 checkHealth();
 setInterval(checkHealth, 15000);
 
+// Chat toggle
+chatToggle.addEventListener("click", () => {
+    chatPanel.classList.toggle("hidden");
+});
+
 function showOverlay(txt) {
-    voiceOverlay.querySelector(".voice-text").textContent = txt;
+    voiceText.textContent = txt;
     voiceOverlay.classList.add("active");
 }
 
@@ -92,8 +102,7 @@ async function toggleMic() {
         mediaRecorder.start(200);
         recording = true;
         wakeBtn.classList.add("active");
-        wakeBtn.querySelector("span").textContent = "NDALO DËGJIMIN";
-        showOverlay("FLIT TASH...");
+        showOverlay("PO DËGJOJ...");
         statusText.textContent = "PO DËGJOJ...";
 
         setTimeout(() => {
@@ -125,7 +134,6 @@ function cleanupMic() {
         micStream = null;
     }
     wakeBtn.classList.remove("active");
-    wakeBtn.querySelector("span").textContent = "AKTIVIZO DËGJIMIN";
 }
 
 async function processAudio(blob) {
@@ -230,10 +238,10 @@ async function sendMessage(text) {
     if (!text.trim()) return;
 
     // Wake word detection
-    const wakePatterns = /^(hej bylbyl|hej bilbyl|hej bjlbyl|hej bylbyl|hej bulbyl|hej bylbyl|hay bylbyl|hej billbil|oj bylbyl|hej bilbyl|hej makrella|hej makrela|hej makarona|oj makrella)/i;
+    const wakePatterns = /^(hej bylbyl|hej bilbyl|hej bjlbyl|hej bulbyl|hay bylbyl|hej billbil|oj bylbyl|hej makrella|hej makrela|hej makarona|oj makrella)/i;
     if (wakePatterns.test(text.trim())) {
         addMessage(text, "user");
-        addMessage("Po dëgjoj, Boss! Flit tash...", "jarvis");
+        addMessage("Po dëgjoj! Flit tash...", "jarvis");
         if (!recording) toggleMic();
         return;
     }
@@ -266,7 +274,7 @@ async function sendMessage(text) {
 wakeBtn.addEventListener("click", toggleMic);
 sendBtn.addEventListener("click", () => sendMessage(userInput.value));
 userInput.addEventListener("keydown", (e) => { if (e.key === "Enter") sendMessage(userInput.value); });
-voiceOverlay.addEventListener("click", (e) => { 
+voiceOverlay.addEventListener("click", (e) => {
     if (e.target.id === "overlayClose" || e.target === voiceOverlay) {
         if (recording) stopRecording();
     }

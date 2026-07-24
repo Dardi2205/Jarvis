@@ -2,93 +2,100 @@
 <html lang="sq">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>J.A.R.V.I.S</title>
     <link rel="stylesheet" href="/static/style.css">
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;700;900&family=Rajdhani:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 </head>
 <body>
-    <div class="jarvis-container">
-        <div class="hud-grid"></div>
-        
-        <div class="header">
-            <div class="logo">
-                <div class="arc-reactor">
-                    <div class="reactor-core"></div>
-                    <div class="reactor-ring ring-1"></div>
-                    <div class="reactor-ring ring-2"></div>
-                    <div class="reactor-ring ring-3"></div>
-                    <div class="reactor-glow"></div>
+    <div class="jarvis-app">
+        <!-- Background HUD -->
+        <div class="hud-bg">
+            <div class="hud-grid"></div>
+            <div class="hud-glow"></div>
+        </div>
+
+        <!-- Arc Reactor HUD -->
+        <div class="hud-center" id="hudCenter">
+            <div class="reactor-outer">
+                <div class="ring ring-outer ring-1"></div>
+                <div class="ring ring-outer ring-2"></div>
+                <div class="ring ring-mid ring-3"></div>
+                <div class="ring ring-mid ring-4"></div>
+                <div class="ring ring-inner ring-5"></div>
+                <div class="ring ring-core ring-6"></div>
+                <div class="reactor-core">
+                    <div class="core-pulse"></div>
+                    <div class="core-label">J.A.R.V.I.S</div>
                 </div>
-                <div class="logo-text">
-                    <h1>J.A.R.V.I.S</h1>
-                    <span class="subtitle">JUST A RATHER VERY INTELLIGENT SYSTEM</span>
-                </div>
+                <div class="hud-ticks"></div>
             </div>
-            <div class="status-panel">
+            <div class="status-bar">
                 <div class="status-indicator">
-                    <span class="dot"></span>
-                    <span id="statusText">INITIALIZING...</span>
+                    <span class="dot" id="statusDot"></span>
+                    <span id="statusText">ONLINE</span>
                 </div>
-                <div class="system-time" id="systemTime"></div>
+                <div class="system-time" id="systemTime">00:00:00</div>
             </div>
         </div>
 
-        <div class="chat-area" id="chatArea">
-            <div class="message jarvis">
-                <div class="avatar">
-                    <svg viewBox="0 0 24 24" width="20" height="20">
-                        <path fill="currentColor" d="M12,2A2,2 0 0,1 14,4C14,4.74 13.6,5.39 13,5.73V7H14A7,7 0 0,1 21,14H22A1,1 0 0,1 23,15V18A1,1 0 0,1 22,19H21V20A2,2 0 0,1 19,22H5A2,2 0 0,1 3,20V19H2A1,1 0 0,1 1,18V15A1,1 0 0,1 2,14H3A7,7 0 0,1 10,7H11V5.73C10.4,5.39 10,4.74 10,4A2,2 0 0,1 12,2M7.5,13A2.5,2.5 0 0,0 5,15.5A2.5,2.5 0 0,0 7.5,18A2.5,2.5 0 0,0 10,15.5A2.5,2.5 0 0,0 7.5,13M16.5,13A2.5,2.5 0 0,0 14,15.5A2.5,2.5 0 0,0 16.5,18A2.5,2.5 0 0,0 19,15.5A2.5,2.5 0 0,0 16.5,13Z"/>
-                    </svg>
+        <!-- Chat Panel -->
+        <div class="chat-panel" id="chatPanel">
+            <div class="chat-header">
+                <span class="chat-title">COMM CHANNEL</span>
+                <button class="chat-toggle" id="chatToggle">
+                    <svg viewBox="0 0 24 24" width="20" height="20"><path fill="currentColor" d="M19,13H5V11H19V13Z"/></svg>
+                </button>
+            </div>
+            <div class="chat-area" id="chatArea">
+                <div class="message jarvis">
+                    <div class="avatar">J</div>
+                    <div class="bubble">Përshëndetje! Unë jam JARVIS. Si mund të ndihmoj?</div>
                 </div>
-                <div class="bubble">Përshëndetje! Unë jam JARVIS. Si mund të ndihmoj?</div>
             </div>
         </div>
 
-        <div class="wake-controls">
-            <button class="wake-btn" id="wakeBtn">
-                <svg viewBox="0 0 24 24" width="32" height="32">
+        <!-- Controls -->
+        <div class="controls-bar">
+            <button class="mic-btn" id="wakeBtn">
+                <div class="mic-ring"></div>
+                <svg viewBox="0 0 24 24" width="28" height="28">
                     <path fill="currentColor" d="M12,2A3,3 0 0,1 15,5V11A3,3 0 0,1 12,14A3,3 0 0,1 9,11V5A3,3 0 0,1 12,2M19,11C19,14.53 16.39,17.44 13,17.93V21H11V17.93C7.61,17.44 5,14.53 5,11H7A5,5 0 0,0 12,16A5,5 0 0,0 17,11H19Z"/>
                 </svg>
-                <span>AKTIVIZO DËGJIMIN</span>
             </button>
-        </div>
-
-        <div class="input-area">
             <div class="input-wrapper">
-                <input type="text" id="userInput" placeholder="ENTER COMMAND..." autocomplete="off">
+                <input type="text" id="userInput" placeholder="Shkruaj komandën..." autocomplete="off">
+                <button class="send-btn" id="sendBtn">
+                    <svg viewBox="0 0 24 24" width="22" height="22">
+                        <path fill="currentColor" d="M2,21L23,12L2,3V10L17,12L2,14V21Z"/>
+                    </svg>
+                </button>
             </div>
-            <button class="send-btn" id="sendBtn">
-                <svg viewBox="0 0 24 24" width="24" height="24">
-                    <path fill="currentColor" d="M2,21L23,12L2,3V10L17,12L2,14V21Z"/>
-                </svg>
-            </button>
         </div>
 
-        <div class="corner-decoration top-left"></div>
-        <div class="corner-decoration top-right"></div>
-        <div class="corner-decoration bottom-left"></div>
-        <div class="corner-decoration bottom-right"></div>
+        <!-- Corner decorations -->
+        <div class="corner-dec tl"></div>
+        <div class="corner-dec tr"></div>
+        <div class="corner-dec bl"></div>
+        <div class="corner-dec br"></div>
+
+        <!-- Scan line -->
+        <div class="scanline"></div>
     </div>
 
+    <!-- Voice Overlay -->
     <div class="voice-overlay" id="voiceOverlay">
-        <div class="voice-visualizer">
-            <div class="viz-ring"></div>
-            <div class="viz-ring"></div>
-            <div class="viz-ring"></div>
-            <div class="viz-core"></div>
+        <div class="vo-reactor">
+            <div class="vo-ring vo-ring-1"></div>
+            <div class="vo-ring vo-ring-2"></div>
+            <div class="vo-ring vo-ring-3"></div>
+            <div class="vo-core"></div>
         </div>
-        <span class="voice-text">PO DËGJOJ...</span>
+        <span class="voice-text" id="voiceText">PO DËGJOJ...</span>
         <div class="voice-waveform">
-            <div class="wave-bar"></div>
-            <div class="wave-bar"></div>
-            <div class="wave-bar"></div>
-            <div class="wave-bar"></div>
-            <div class="wave-bar"></div>
-            <div class="wave-bar"></div>
-            <div class="wave-bar"></div>
-            <div class="wave-bar"></div>
-            <div class="wave-bar"></div>
+            <div class="wave-bar"></div><div class="wave-bar"></div><div class="wave-bar"></div>
+            <div class="wave-bar"></div><div class="wave-bar"></div><div class="wave-bar"></div>
+            <div class="wave-bar"></div><div class="wave-bar"></div><div class="wave-bar"></div>
             <div class="wave-bar"></div>
         </div>
         <button class="overlay-close" id="overlayClose">NDALO</button>
