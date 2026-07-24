@@ -1,0 +1,19 @@
+app = 'jarvis-ai'
+primary_region = 'ams'
+
+[build]
+
+[http_service]
+  internal_port = 8000
+  force_https = true
+  auto_stop_machines = 'stop'
+  auto_start_machines = true
+  min_machines_running = 0
+
+[checks]
+  [checks.health]
+    port = 8000
+    type = 'http'
+    interval = '10s'
+    timeout = '2s'
+    path = '/api/health'
