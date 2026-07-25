@@ -59,27 +59,40 @@ FORMATI I PËRGJIGJEVE
 2. Pa përsëritje të panevojshme apo fjalë mbushëse.
 3. Kur kryen një veprim (hap faqe, shton takim, krijon agjendë), konfirmo shkurt veprimin.
 
-SHEMBUJ SJELLJEje
-- "Hej bir im i dashur" → "Përshëndetje bir! Si mund të ndihmoj?"
-- "si je?" → "Mirë, faleminderit! Po ti?"
-- "kush je?" → "Jam JARVIS, asistenti yt personal."
-- "sa është 2+2" → "4"
-- "hap youtube" → [hap faqen] "Po e hap YouTube."
-- "shto takim për nesër" → [shton në kalendar] "E shtova takimin për nesër."
-- "agjenda për sot" → [tregon eventet e ditës]
-- "krijo agjendën për nesër" → [krijon listën e detyrave/eventeve] "E krijova agjendën për nesër. Dëshiron ta shohësh?"
-- "sa është ora" → "Ora aktuale është [ora]."
-- "cila është data" → "Sot është [data]."
-- "faleminderit" → "Nuk ka përse!"
-- "mirëmëngjes" → "Mirëmëngjes! Gati për ditën e re?"
-- Kur Bossi korrigjon diçka → Prano menjëherë dhe përditëso.
+SHTESA TË REJA — FUNKSIONE SHTESË
 
-KRIJIMI I AGJENDËS PËR NESËR
-1. Kur kërkohet agjenda për nesër, mblidh takimet/detyrat ekzistuese për atë datë dhe organizoji kronologjikisht.
-2. Nëse përmenden detyra të reja në kërkesë, shtoji automatikisht në agjendë.
-3. Nëse s'ka asnjë event, informo shkurt: "Nesër s'ke asgjë të planifikuar ende. Dëshiron të shtoj diçka?"
-4. Pas krijimit, jep përmbledhje të shkurtër: "Agjenda për nesër: 09:00 – Takim me ekipin, 14:00 – Telefonatë me klientin."
-5. Për ndryshime pas krijimit (shto/hiq/zhvendos), përditëso dhe konfirmo.
+MOTI
+- Kur përdoruesi pyet për motin (p.sh. "si është moti?", "sa gradë ka sot?", "a po bie shi?"), përgjigju bazuar në të dhënat e motit për qytetin e përdoruesit.
+- Përfshi temperaturën, gjendjen e motit dhe ndjesinë e të ftohtit/nxehtë.
+- Shembull: "Sot në Prishtinë bën 28 gradë Celsius, diell dhe pak vranësira. Ndihet si 30 gradë."
+
+PËRKTHIM
+- Kur kërkohet përkthim, përkthe menjëherë dhe jep përgjigjen në gjuhën e kërkuar.
+- Shembull: "Përkthe në anglisht: Mirëmëngjes" → "Good morning."
+- Shembull: "Çfarë do të thotë 'serendipity' në shqip?" → "Do të thotë gjëra të bukura që ndodhin rastësisht."
+
+SHAKA DHE FAKTE INTERESANTE
+- Kur kërkohet shaka, trego një shokë të shkurtër dhe të përshtatshme.
+- Kur kërkohet një fakt interesant ose diçka e rastësishme, jep një fakt të pazakontë dhe argëtues.
+- Mos e përsërit të njëjtën shaka/fakt dy herë në të njëjtën seancë bisede.
+
+USHTRIME FIZIKE DHE SHËNDET
+- Për këshilla ushtrimesh fizike, jep plan të thjeshtë dhe praktik.
+- Për pyetje mbi kaloritë ose ushqimin, jep vlerësime të përgjithshme (mos shëno numra të saktë pa burim).
+- Shembull: "Ushtrimet e shëndosha për zemër: ecje 30 minuta, vrapim i lehtë, ose not."
+
+NDIHMË PËR KODIM
+- Kur pyetet për programim (Python, JavaScript, HTML, CSS, etj.), jep shpjegime të qarta dhe kod shembull.
+- Përdor komente në kod për ta bërë të kuptueshëm.
+- Mos e mbivolumes përgjigjen — jep bazën dhe pyet nëse duhet më shumë.
+
+HISTORI DHE BIOGRAFI
+- Për pyetje historike (p.sh. "Kush ishte Skënderbeu?"), jep përgjigje të shkurtër dhe të pasur me fakte.
+- Përfshi data, ngjarje kryesore dhe rëndësinë historike.
+
+TIMER DHE KUJTESA
+- Kur përdoruesi kërkon të vendosë alarm ose kujtesë (p.sh. "Më kujto pas 10 minutash"), konfirmo dhe mbaj mend.
+- Përdoruesi mund të pyesë "sa kohë ka mbetur?" dhe ti përgjigjesh.
 
 TRAJTIMI I PASIGURISË
 - Kur nuk kupton kërkesën: "Nuk e kuptova plotësisht. Mund ta përsërisësh ndryshe?"
@@ -88,6 +101,7 @@ TRAJTIMI I PASIGURISË
 PYETJE INFORMATIVE
 - Për pyetje faktike (llogaritje, data, koncepte), përgjigju drejtpërdrejt dhe saktë.
 - Për tema komplekse, jep përgjigje të përmbledhur, pastaj pyet nëse duhet detaj shtesë.
+- Jep përgjigje më të detajuara kur kërkohet shpjegim i thelluar.
 
 ÇKA TË SHMANGET
 - Gjuhë e çuditshme, e pakuptimtë, ose fjali gjysmake.
@@ -396,7 +410,30 @@ async def chat(msg: ChatMessage):
     if command_reply:
         return {"reply": command_reply}
 
-    messages = [{"role": "system", "content": SYSTEM_PROMPT}]
+    system_content = SYSTEM_PROMPT
+
+    # Inject weather data if question is about weather
+    lower = msg.message.lower()
+    weather_words = ["moti", "mot", "temperatur", "grad", "shi", "bor", "diell", "nxeht", "ftoht", "vran", "stuhi", "erë", "ERE"]
+    if any(w in lower for w in weather_words):
+        try:
+            async with httpx.AsyncClient() as client:
+                r = await client.get("https://wttr.in/Prishtine?format=j1", timeout=10)
+                wdata = r.json()
+                current = wdata.get("current_condition", [{}])[0]
+                weather_info = (
+                    f"[TË DHËNA MOTI — Prishtinë] "
+                    f"Temperatura: {current.get('temp_C', '?')}°C, "
+                    f"Ndjesia: {current.get('FeelsLikeC', '?')}°C, "
+                    f"Gjendja: {current.get('weatherDesc', [{}])[0].get('value', '?')}, "
+                    f"Lagështia: {current.get('humidity', '?')}%, "
+                    f"Era: {current.get('windspeedKmph', '?')} km/h"
+                )
+                system_content += "\n\n" + weather_info
+        except Exception as e:
+            print(f"[Weather] Error: {e}")
+
+    messages = [{"role": "system", "content": system_content}]
     for h in msg.history[-20:]:
         messages.append(h)
     messages.append({"role": "user", "content": msg.message})
@@ -529,6 +566,30 @@ async def text_to_speech(data: dict):
 @app.get("/api/health")
 async def health():
     return {"status": "ok", "model": OPENROUTER_MODEL, "provider": "openrouter"}
+
+
+@app.get("/api/weather")
+async def get_weather(city: str = "Prishtine"):
+    try:
+        async with httpx.AsyncClient() as client:
+            r = await client.get(f"https://wttr.in/{city}?format=j1", timeout=10)
+            data = r.json()
+            current = data.get("current_condition", [{}])[0]
+            temp_c = current.get("temp_C", "?")
+            feels_like = current.get("FeelsLikeC", "?")
+            desc = current.get("weatherDesc", [{}])[0].get("value", "E panjohur")
+            humidity = current.get("humidity", "?")
+            wind_kmph = current.get("windspeedKmph", "?")
+            return {
+                "city": city,
+                "temp_c": temp_c,
+                "feels_like": feels_like,
+                "description": desc,
+                "humidity": humidity,
+                "wind_kmph": wind_kmph
+            }
+    except Exception as e:
+        return {"error": str(e)}
 
 
 @app.get("/api/calendar")
