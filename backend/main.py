@@ -34,7 +34,7 @@ OPENROUTER_MODEL = os.getenv("OPENROUTER_MODEL", "google/gemini-2.5-flash")
 
 FFMPEG = os.getenv("FFMPEG_PATH", "ffmpeg")
 
-VOICE = "sq-AL-AnilaNeural"
+VOICE = "sq-AL-IlirNeural"
 
 SYSTEM_PROMPT = """Ti je JARVIS, asistenti personal i përdoruesit. Marrëdhënia jote me të nuk është ajo e një shërbyesi formal, por e një shoku të ngushtë e të besueshëm — dikush që e njeh mirë, që flet lirshëm me të, por gjithsesi mban një nivel maturie dhe respekti, si një koleg i afërt me përvojë.
 
@@ -547,7 +547,7 @@ async def text_to_speech(data: dict):
         return JSONResponse({"error": "No text"}, status_code=400)
 
     try:
-        communicate = edge_tts.Communicate(text, VOICE, rate="-5%", pitch="+2Hz")
+        communicate = edge_tts.Communicate(text, VOICE, rate="-15%", pitch="-2Hz")
         tmp = tempfile.NamedTemporaryFile(suffix=".mp3", delete=False)
         tmp.close()
         await communicate.save(tmp.name)
